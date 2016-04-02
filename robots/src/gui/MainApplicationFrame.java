@@ -4,6 +4,16 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -158,7 +168,19 @@ public class MainApplicationFrame extends JFrame
     		System.exit(0);
     	}
     }
-   
+    
+    protected void writeInFile(String inf)
+    {
+    	File f = new File("C:/Users/windowsLocation.txt");
+    	DataOutputStream winlocation;
+		try {
+			winlocation = new DataOutputStream(new FileOutputStream(f));
+			winlocation.writeChars(inf);
+		} catch (Exception e) {
+			System.out.println("Your file is not correct");			
+		}
+    }
+       
     private void setLookAndFeel(String className)
     {
         try
