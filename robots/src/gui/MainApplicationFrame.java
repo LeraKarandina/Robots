@@ -19,6 +19,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileSystemView;
 
 import log.Logger;
 
@@ -156,7 +157,7 @@ public class MainApplicationFrame extends JFrame
     {
     	Object[] options = {"Да", "Нет"};
     	int sel = JOptionPane.showOptionDialog(null, "Вы уверены, что хотите выйти?", "Выход", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-    	if (sel == 0)
+    	if (sel == JOptionPane.YES_OPTION)
     	{
     		System.exit(0);
     	}
@@ -164,13 +165,13 @@ public class MainApplicationFrame extends JFrame
     
     protected void writeInFile(String inf)
     {
-    	File f = new File("C:/Users/windowsLocation.txt");
+    	File f = new File(System.getProperty("user.home"), "winlocation.txt");
     	DataOutputStream winlocation;
 		try {
 			winlocation = new DataOutputStream(new FileOutputStream(f));
 			winlocation.writeChars(inf);
 		} catch (Exception e) {
-			System.out.println("Your file is not correct");			
+			System.exit(0);			
 		}
     }
        
