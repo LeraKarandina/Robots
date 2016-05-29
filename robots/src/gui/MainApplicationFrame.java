@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -50,7 +51,7 @@ public class MainApplicationFrame extends JFrame
 
         GameWindow gameWindow = new GameWindow();
         gameWindow.setSize(400,  400);
-        addWindow(gameWindow);
+        addWindow(gameWindow);        
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -58,6 +59,10 @@ public class MainApplicationFrame extends JFrame
         JMenuBar menuBar = generateMenuBar();
         menuBar.add(createMenuBar());
         setJMenuBar(menuBar);
+    }
+    
+    protected Rectangle getCoordinates(JInternalFrame frame){
+    	return frame.getBounds();
     }
     
     protected LogWindow createLogWindow()
@@ -159,7 +164,7 @@ public class MainApplicationFrame extends JFrame
     	int sel = JOptionPane.showOptionDialog(null, "Вы уверены, что хотите выйти?", "Выход", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
     	if (sel == JOptionPane.YES_OPTION)
     	{
-    		System.exit(0);
+    		dispose();
     	}
     }
     
@@ -170,7 +175,8 @@ public class MainApplicationFrame extends JFrame
 		try {
 			winlocation = new DataOutputStream(new FileOutputStream(f));
 			winlocation.writeChars(inf);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			System.exit(0);			
 		}
     }
