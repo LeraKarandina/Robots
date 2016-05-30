@@ -65,6 +65,14 @@ public class MainApplicationFrame extends JFrame
     	return frame.getBounds();
     }
     
+    protected void setCoordinatesLogWindow(String[] cor){
+    	Rectangle logPosition = new Rectangle(Integer.parseInt(cor[0]), Integer.parseInt(cor[1]), Integer.parseInt(cor[2]), Integer.parseInt(cor[3])) ;
+    }
+    
+    protected void setCoordinatesGameWindow(String[] cor){
+    	Rectangle gamePosition = new Rectangle(Integer.parseInt(cor[0]), Integer.parseInt(cor[1]), Integer.parseInt(cor[2]), Integer.parseInt(cor[3]));
+    }
+    
     protected LogWindow createLogWindow()
     {
         LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
@@ -177,7 +185,7 @@ public class MainApplicationFrame extends JFrame
 			winlocation.writeChars(inf);
 		} 
 		catch (Exception e) {
-			System.exit(0);			
+			dispose();			
 		}
     }
        
