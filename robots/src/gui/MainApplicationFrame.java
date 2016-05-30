@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.Console;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,6 +34,8 @@ import log.Logger;
 public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
+    protected LogWindow logW;
+    protected GameWindow gameW;
     
     public MainApplicationFrame() {
         //Make the big window be indented 50 pixels from each edge
@@ -48,10 +51,12 @@ public class MainApplicationFrame extends JFrame
         
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
+        this.logW = logWindow;
 
         GameWindow gameWindow = new GameWindow();
         gameWindow.setSize(400,  400);
-        addWindow(gameWindow);        
+        addWindow(gameWindow); 
+        this.gameW = gameWindow;
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -59,10 +64,6 @@ public class MainApplicationFrame extends JFrame
         JMenuBar menuBar = generateMenuBar();
         menuBar.add(createMenuBar());
         setJMenuBar(menuBar);
-    }
-    
-    protected Rectangle getCoordinates(JInternalFrame frame){
-    	return frame.getBounds();
     }
     
     protected void setCoordinatesLogWindow(String[] cor){
@@ -165,6 +166,12 @@ public class MainApplicationFrame extends JFrame
     	 });
     	 return systemLookAndFeel;
     }
+    protected void serealisation(){
+    	logW.getBounds();
+    	gameW.getBounds();
+    	String info = Integer.toString(logW.getX())+' '+Integer.toString(logW.getY())+' '+Integer.toString(logW.getWidth())+' '+Integer.toString(logW.getHeight())+' '+Integer.toString(gameW.getX())+' '+Integer.toString(gameW.getY())+' '+Integer.toString(gameW.getWidth())+' '+Integer.toString(gameW.getHeight());
+    	writeInFile(info);  
+    }
     
     protected void exitWindow()
     {
@@ -172,6 +179,7 @@ public class MainApplicationFrame extends JFrame
     	int sel = JOptionPane.showOptionDialog(null, "Вы уверены, что хотите выйти?", "Выход", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
     	if (sel == JOptionPane.YES_OPTION)
     	{
+    		serealisation();
     		dispose();
     	}
     }
