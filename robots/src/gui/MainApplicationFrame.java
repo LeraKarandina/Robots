@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -55,9 +57,17 @@ public class MainApplicationFrame extends JFrame
         gameWindow.setSize(400,  400);
         addWindow(gameWindow); 
         this.gameW = gameWindow;
-
+        
+        addWindowListener(new WindowAdapter() 
+        {
+        	 public void windowClosing(WindowEvent e) 
+        	 {
+        		 exitWindow();
+        	 }
+        });
+        
         setJMenuBar(generateMenuBar());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         
         JMenuBar menuBar = generateMenuBar();
         menuBar.add(createMenuBar());
