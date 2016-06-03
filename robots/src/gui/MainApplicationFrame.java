@@ -5,10 +5,9 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.Console;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -21,7 +20,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.filechooser.FileSystemView;
 
 import log.Logger;
 
@@ -184,19 +182,17 @@ public class MainApplicationFrame extends JFrame
     	}
     }
     
-    protected void writeInFile(String inf)
-    {
+    protected void writeInFile(String inf){
     	File f = new File(System.getProperty("user.home"), "winlocation.txt");
-    	DataOutputStream winlocation;
-		try {
-			winlocation = new DataOutputStream(new FileOutputStream(f));
-			winlocation.writeChars(inf);
-		} 
-		catch (Exception e) {
-			dispose();			
-		}
+    	try(FileWriter writer = new FileWriter(f, false))
+         {
+             writer.write(inf);
+         }
+    	catch(IOException ex){            
+            System.out.println(ex.getMessage());
+        } 
     }
-       
+    
     private void setLookAndFeel(String className)
     {
         try
