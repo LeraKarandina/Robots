@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -48,7 +49,6 @@ public class MainApplicationFrame extends JFrame
 
         setContentPane(desktopPane);
         
-        
         LogWindow logWindow = createLogWindow();
         addWindow(logWindow);
         this.logW = logWindow;
@@ -69,17 +69,14 @@ public class MainApplicationFrame extends JFrame
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         
+        
+        if (new File(System.getProperty("user.home"), "winlocation.txt").exists()){
+        	deserealisation();
+        }
+        
         JMenuBar menuBar = generateMenuBar();
         menuBar.add(createMenuBar());
         setJMenuBar(menuBar);
-    }
-    
-    protected void setCoordinatesLogWindow(String[] cor){
-    	Rectangle logPosition = new Rectangle(Integer.parseInt(cor[0]), Integer.parseInt(cor[1]), Integer.parseInt(cor[2]), Integer.parseInt(cor[3])) ;
-    }
-    
-    protected void setCoordinatesGameWindow(String[] cor){
-    	Rectangle gamePosition = new Rectangle(Integer.parseInt(cor[0]), Integer.parseInt(cor[1]), Integer.parseInt(cor[2]), Integer.parseInt(cor[3]));
     }
     
     protected LogWindow createLogWindow()
@@ -201,6 +198,28 @@ public class MainApplicationFrame extends JFrame
     	catch(IOException ex){            
             System.out.println(ex.getMessage());
         } 
+    }
+    
+    protected String readFromFile(){
+    	File f = new File(System.getProperty("user.home"), "winlocation.txt");
+    	try(FileReader reader = new FileReader(f))
+    	{
+    	    char[] buffer = new char[(int)f.length()];
+    	    reader.read(buffer);
+    	    return (new String(buffer));
+    	}
+    	catch(IOException ex){
+    	    return ex.getMessage();
+    	}   
+    }
+    
+    protected void deserealisation(){
+    	String inf = readFromFile(); 
+    	String[] coor = inf.split(" ");
+    	Rectangle logPosition = new Rectangle(Integer.parseInt(coor[0]), Integer.parseInt(coor[1]), Integer.parseInt(coor[2]), Integer.parseInt(coor[3]));
+    	Rectangle gamePosition = new Rectangle(Integer.parseInt(coor[4]), Integer.parseInt(coor[5]), Integer.parseInt(coor[6]), Integer.parseInt(coor[7]));
+    	logW.setBounds(logPosition);
+    	gameW.setBounds(gamePosition);    	
     }
     
     private void setLookAndFeel(String className)
