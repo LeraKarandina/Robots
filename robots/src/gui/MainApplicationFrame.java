@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -172,9 +173,17 @@ public class MainApplicationFrame extends JFrame
     	 return systemLookAndFeel;
     }
     protected void serealisation(){
+    	int logCl = 0;
+    	int gameCl = 0;
     	logW.getBounds();
     	gameW.getBounds();
-    	String info = Integer.toString(logW.getX())+' '+Integer.toString(logW.getY())+' '+Integer.toString(logW.getWidth())+' '+Integer.toString(logW.getHeight())+' '+Integer.toString(gameW.getX())+' '+Integer.toString(gameW.getY())+' '+Integer.toString(gameW.getWidth())+' '+Integer.toString(gameW.getHeight());
+    	if (logW.isClosed()){
+    		logCl = 1;
+    	}
+    	if (gameW.isClosed()){
+    		gameCl = 1;
+    	}
+    	String info = Integer.toString(logW.getX())+' '+Integer.toString(logW.getY())+' '+Integer.toString(logW.getWidth())+' '+Integer.toString(logW.getHeight())+' '+ Integer.toString(logCl)+' '+Integer.toString(gameW.getX())+' '+Integer.toString(gameW.getY())+' '+Integer.toString(gameW.getWidth())+' '+Integer.toString(gameW.getHeight())+' '+Integer.toString(gameCl);;
     	writeInFile(info);  
     }
     
@@ -217,7 +226,19 @@ public class MainApplicationFrame extends JFrame
     	String inf = readFromFile(); 
     	String[] coor = inf.split(" ");
     	Rectangle logPosition = new Rectangle(Integer.parseInt(coor[0]), Integer.parseInt(coor[1]), Integer.parseInt(coor[2]), Integer.parseInt(coor[3]));
-    	Rectangle gamePosition = new Rectangle(Integer.parseInt(coor[4]), Integer.parseInt(coor[5]), Integer.parseInt(coor[6]), Integer.parseInt(coor[7]));
+    	if (Integer.parseInt(coor[4]) == 1){
+    		try {
+    			logW.setIcon(true);
+    		}
+    		catch (PropertyVetoException e) {}
+    	}
+    	Rectangle gamePosition = new Rectangle(Integer.parseInt(coor[5]), Integer.parseInt(coor[6]), Integer.parseInt(coor[7]), Integer.parseInt(coor[8]));
+    	if (Integer.parseInt(coor[9]) == 1){
+    		try {
+    			gameW.setIcon(true);
+    		}
+    		catch (PropertyVetoException e) {}
+    	}
     	logW.setBounds(logPosition);
     	gameW.setBounds(gamePosition);    	
     }
